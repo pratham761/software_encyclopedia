@@ -23,7 +23,7 @@ class _HomeViewState extends State<HomeView> {
     super.initState();
   }
 
-   void _showLogoutAlertDialog(BuildContext context) {
+   void _showLogoutAlert(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -144,7 +144,7 @@ class _HomeViewState extends State<HomeView> {
           actions: [
             selectedIndex == 0 ? IconButton(
             onPressed: () async {
-              _showLogoutAlertDialog(context);
+              _showLogoutAlert(context);
             },
             icon: const Icon(
               Icons.logout,
