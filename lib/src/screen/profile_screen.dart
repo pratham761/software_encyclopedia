@@ -1,20 +1,21 @@
 import 'package:flutter/material.dart';
 
-class DashboardScreen extends StatefulWidget {
-  const DashboardScreen({super.key});
+class ProfileScreen extends StatefulWidget {
+  const ProfileScreen({super.key});
 
   @override
-  State<DashboardScreen> createState() => _DashboardScreenNewState();
+  State<ProfileScreen> createState() => _ProfileScreenState();
 }
 
-class _DashboardScreenNewState extends State<DashboardScreen> {
+class _ProfileScreenState extends State<ProfileScreen> {
   @override
   Widget build(BuildContext context) {
     return SizedBox(
       height: MediaQuery.of(context).size.height - 40,
       width: MediaQuery.of(context).size.width,
       child: const Center(
-        child: Text('Dashboard'),
+        child: Text('Profile Details'),
+        
       ),
     );
   }

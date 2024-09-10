@@ -17,9 +17,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
-        iconTheme: IconThemeData(color: AppColors.primaryColor),
-            title: Text('Signup', style: TextStyle(color: AppColors.primaryColor),),
-            centerTitle: true,
+        iconTheme: const IconThemeData(color: AppColors.primaryColor),
+        title: const Text(
+          'Signup',
+          style: TextStyle(color: AppColors.primaryColor),
+        ),
+        centerTitle: true,
       ),
       body: SingleChildScrollView(
         child: Column(
@@ -35,23 +38,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 controller: userNameController,
                 keyboardType: TextInputType.emailAddress,
                 cursorColor: Colors.black,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: AppColors.primaryShadowColor,
                     border: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(10)),
-                    hintStyle: TextStyle(color: AppColors.primaryColor),
+                    hintStyle: const TextStyle(color: AppColors.primaryColor),
                     hintText: "Username",
                     hintMaxLines: 1,
-                    errorStyle: TextStyle(color: Colors.red, fontSize: 10.0)),
+                    errorStyle:
+                        const TextStyle(color: Colors.red, fontSize: 10.0)),
                 maxLines: 1,
                 onChanged: (value) {
-                  print('On CHange value : $value');
-                  if (value.isEmpty) {
-                    print('On Change Value Empty');
-                  }
+                  if (value.isEmpty) {}
                 },
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -70,23 +71,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 controller: emailController,
                 keyboardType: TextInputType.emailAddress,
                 cursorColor: Colors.black,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: AppColors.primaryShadowColor,
                     border: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(10)),
-                    hintStyle: TextStyle(color: AppColors.primaryColor),
+                    hintStyle: const TextStyle(color: AppColors.primaryColor),
                     hintText: "Email",
                     hintMaxLines: 1,
-                    errorStyle: TextStyle(color: Colors.red, fontSize: 10.0)),
+                    errorStyle:
+                        const TextStyle(color: Colors.red, fontSize: 10.0)),
                 maxLines: 1,
                 onChanged: (value) {
-                  print('On CHange value : $value');
-                  if (value.isEmpty) {
-                    print('On Change Value Empty');
-                  }
+                  if (value.isEmpty) {}
                 },
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -106,23 +105,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 obscureText: false,
                 keyboardType: TextInputType.number,
                 cursorColor: Colors.black,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: AppColors.primaryShadowColor,
                     border: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(10)),
-                    hintStyle: TextStyle(color: AppColors.primaryColor),
+                    hintStyle: const TextStyle(color: AppColors.primaryColor),
                     hintText: "Phone number",
                     hintMaxLines: 1,
-                    errorStyle: TextStyle(color: Colors.red, fontSize: 10.0)),
+                    errorStyle:
+                        const TextStyle(color: Colors.red, fontSize: 10.0)),
                 maxLines: 1,
                 onChanged: (value) {
-                  print('On CHange value : $value');
-                  if (value.isEmpty) {
-                    print('On Change Value Empty');
-                  }
+                  if (value.isEmpty) {}
                 },
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -142,23 +139,21 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 obscureText: true,
                 keyboardType: TextInputType.text,
                 cursorColor: Colors.black,
-                style: TextStyle(color: Colors.black),
+                style: const TextStyle(color: Colors.black),
                 decoration: InputDecoration(
                     filled: true,
                     fillColor: AppColors.primaryShadowColor,
                     border: OutlineInputBorder(
                         borderSide: BorderSide.none,
                         borderRadius: BorderRadius.circular(10)),
-                    hintStyle: TextStyle(color: AppColors.primaryColor),
+                    hintStyle: const TextStyle(color: AppColors.primaryColor),
                     hintText: "Password",
                     hintMaxLines: 1,
-                    errorStyle: TextStyle(color: Colors.red, fontSize: 10.0)),
+                    errorStyle:
+                        const TextStyle(color: Colors.red, fontSize: 10.0)),
                 maxLines: 1,
                 onChanged: (value) {
-                  print('On CHange value : $value');
-                  if (value.isEmpty) {
-                    print('On Change Value Empty');
-                  }
+                  if (value.isEmpty) {}
                 },
                 validator: (value) {
                   if (value!.isEmpty) {
@@ -168,31 +163,39 @@ class _SignUpScreenState extends State<SignUpScreen> {
                 },
               ),
             ),
-            const SizedBox(height: 20.0,),
+            const SizedBox(
+              height: 20.0,
+            ),
             Container(
               height: 60,
               width: MediaQuery.of(context).size.width - 24,
-              
               decoration: BoxDecoration(
                 borderRadius: BorderRadius.circular(10),
                 color: AppColors.primaryColor,
               ),
               child: ElevatedButton(
                 style: ButtonStyle(
-                  backgroundColor: MaterialStateProperty.all(AppColors.primaryColor),
-                  foregroundColor: MaterialStateProperty.all(AppColors.canvasColor),
+                  backgroundColor:
+                      MaterialStateProperty.all(AppColors.primaryColor),
+                  foregroundColor:
+                      MaterialStateProperty.all(AppColors.canvasColor),
                 ),
-                onPressed: () async {
-              
-              }, child: Text('SIGN UP'),),
+                onPressed: () async {},
+                child: const Text('SIGN UP'),
+              ),
             ),
-            const SizedBox(height: 10.0,),
+            const SizedBox(
+              height: 10.0,
+            ),
             TextButton(
               onPressed: () async {
                 FocusScope.of(context).unfocus();
                 Navigator.pop(context);
               },
-              child: Text('Already User? Login here', style: TextStyle(color: AppColors.primaryColor, fontSize: 15.0),),
+              child: const Text(
+                'Already User? Login here',
+                style: TextStyle(color: AppColors.primaryColor, fontSize: 15.0),
+              ),
             ),
           ],
         ),

@@ -1,7 +1,9 @@
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'package:software_encyclopedia/src/screen/dashboard_screen.dart';
 import 'package:software_encyclopedia/src/screen/login_screen.dart';
+import 'package:software_encyclopedia/src/utils/app_colors.dart';
+
+import 'src/screen/home_view.dart';
 
 void main() {
   runApp(const MyApp());
@@ -15,7 +17,8 @@ class MyApp extends StatelessWidget {
     return MaterialApp(
       title: 'Software Encyclopedia',
       theme: ThemeData(
-        colorScheme: ColorScheme.fromSeed(seedColor: Colors.deepPurple),
+        colorScheme:
+            ColorScheme.fromSeed(seedColor: AppColors.primaryShadowColor),
         useMaterial3: true,
       ),
       debugShowCheckedModeBanner: false,
@@ -44,17 +47,18 @@ class _MyHomePageState extends State<MyHomePage> {
     SharedPreferences prefs = await SharedPreferences.getInstance();
 
     bool? isLoggedIn = prefs.getBool('appIsLoggedIn') ?? false;
-    print('isLoggedIn : $isLoggedIn');
     if (isLoggedIn) {
+      if (!mounted) return;
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => DashboardScreen()),
+        MaterialPageRoute(builder: (context) => const HomeView()),
         ModalRoute.withName('/dashboard'),
       );
     } else {
+      if (!mounted) return;
       Navigator.pushAndRemoveUntil(
         context,
-        MaterialPageRoute(builder: (context) => LoginScreen()),
+        MaterialPageRoute(builder: (context) => const LoginScreen()),
         ModalRoute.withName('/login'),
       );
     }
