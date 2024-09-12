@@ -1,4 +1,9 @@
+import 'dart:developer';
+
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
+import 'package:software_encyclopedia/src/screen/home_view.dart';
+import 'package:software_encyclopedia/src/screen/login_screen.dart';
 import 'package:software_encyclopedia/src/utils/app_colors.dart';
 
 class SignUpScreen extends StatefulWidget {
@@ -9,10 +14,52 @@ class SignUpScreen extends StatefulWidget {
 }
 
 class _SignUpScreenState extends State<SignUpScreen> {
+
+// Test@1234
+
   TextEditingController userNameController = TextEditingController();
   TextEditingController emailController = TextEditingController();
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+
+  registration() async {
+    if (passwordController.text != "" && emailController.text != "" && userNameController.text != "") {
+      try {
+        UserCredential userCredential = await FirebaseAuth.instance
+            .createUserWithEmailAndPassword(email: emailController.text, password: passwordController.text);
+            
+            log('userCredential : $userCredential');
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: AppColors.successColor,
+          content: Text(
+            'Registered successfully',
+            style: TextStyle(fontSize: 20),
+          ),
+        ));
+        Navigator.push(
+            context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+      } on FirebaseAuthException catch (e) {
+        if (e.code == 'weak-password') {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: AppColors.yellowColor,
+            content: Text(
+              'Password is too weak',
+              style: TextStyle(fontSize: 20),
+            ),
+          ));
+        } else if (e.code == "email-already-in-use") {
+          ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+            backgroundColor: AppColors.yellowColor,
+            content: Text(
+              'Account already exits',
+              style: TextStyle(fontSize: 20),
+            ),
+          ));
+        }
+      }
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -180,7 +227,9 @@ class _SignUpScreenState extends State<SignUpScreen> {
                   foregroundColor:
                       MaterialStateProperty.all(AppColors.canvasColor),
                 ),
-                onPressed: () async {},
+                onPressed: () async {
+                  registration();
+                },
                 child: const Text('SIGN UP'),
               ),
             ),

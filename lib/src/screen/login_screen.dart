@@ -1,3 +1,4 @@
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:lottie/lottie.dart';
 import 'package:shared_preferences/shared_preferences.dart';
@@ -21,6 +22,36 @@ class _LoginScreenState extends State<LoginScreen> {
   @override
   void initState() {
     super.initState();
+  }
+
+  loginUser() async {
+    try {
+      // UserCredential asdv = (email, pass))
+      // if (asdv != null) {
+      //   // FocusScope.of(context).unfocus();
+      //             // SharedPreferences prefs =
+      //             //     await SharedPreferences.getInstance();
+      //             // prefs.setBool('appIsLoggedIn', true);
+      //             // prefs.reload();
+      //             // if (!mounted) return;
+      //             // Navigator.pushReplacement(
+      //             //   // ignore: use_build_context_synchronously
+      //             //   context,
+      //             //   MaterialPageRoute(
+      //             //     builder: (context) => const HomeView(),
+      //             //   ),
+      //             // );
+      //             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+      //     backgroundColor: AppColors.successColor,
+      //     content: Text(
+      //       'Registered successfully',
+      //       style: TextStyle(fontSize: 20),
+      //     ),
+      //   ));
+      // }
+    } catch (e) {
+      
+    }
   }
 
   @override
@@ -130,19 +161,20 @@ class _LoginScreenState extends State<LoginScreen> {
                       MaterialStateProperty.all(AppColors.canvasColor),
                 ),
                 onPressed: () async {
-                  FocusScope.of(context).unfocus();
-                  SharedPreferences prefs =
-                      await SharedPreferences.getInstance();
-                  prefs.setBool('appIsLoggedIn', true);
-                  prefs.reload();
-                  if (!mounted) return;
-                  Navigator.pushReplacement(
-                    // ignore: use_build_context_synchronously
-                    context,
-                    MaterialPageRoute(
-                      builder: (context) => const HomeView(),
-                    ),
-                  );
+                  loginUser();
+                  // FocusScope.of(context).unfocus();
+                  // SharedPreferences prefs =
+                  //     await SharedPreferences.getInstance();
+                  // prefs.setBool('appIsLoggedIn', true);
+                  // prefs.reload();
+                  // if (!mounted) return;
+                  // Navigator.pushReplacement(
+                  //   // ignore: use_build_context_synchronously
+                  //   context,
+                  //   MaterialPageRoute(
+                  //     builder: (context) => const HomeView(),
+                  //   ),
+                  // );
                 },
                 child: const Text('LOGIN'),
               ),

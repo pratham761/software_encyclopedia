@@ -1,0 +1,29 @@
+{
+  "project_info": {
+    "project_number": "312172083257",
+    "project_id": "software-encyclopedia-project",
+    "storage_bucket": "software-encyclopedia-project.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:312172083257:android:7072bf5946d6368703b5e8",
+        "android_client_info": {
+          "package_name": "com.example.software_encyclopedia"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBbQjol64Er9giFsqDB7NTiguRcvu1-sr0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": []
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
