@@ -2,7 +2,6 @@ import 'dart:developer';
 
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
-import 'package:software_encyclopedia/src/screen/home_view.dart';
 import 'package:software_encyclopedia/src/screen/login_screen.dart';
 import 'package:software_encyclopedia/src/utils/app_colors.dart';
 

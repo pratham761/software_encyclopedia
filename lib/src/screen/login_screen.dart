@@ -26,31 +26,50 @@ class _LoginScreenState extends State<LoginScreen> {
 
   loginUser() async {
     try {
-      // UserCredential asdv = (email, pass))
-      // if (asdv != null) {
-      //   // FocusScope.of(context).unfocus();
-      //             // SharedPreferences prefs =
-      //             //     await SharedPreferences.getInstance();
-      //             // prefs.setBool('appIsLoggedIn', true);
-      //             // prefs.reload();
-      //             // if (!mounted) return;
-      //             // Navigator.pushReplacement(
-      //             //   // ignore: use_build_context_synchronously
-      //             //   context,
-      //             //   MaterialPageRoute(
-      //             //     builder: (context) => const HomeView(),
-      //             //   ),
-      //             // );
-      //             ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-      //     backgroundColor: AppColors.successColor,
-      //     content: Text(
-      //       'Registered successfully',
-      //       style: TextStyle(fontSize: 20),
-      //     ),
-      //   ));
-      // }
-    } catch (e) {
-      
+      UserCredential userCredential = await FirebaseAuth.instance
+          .signInWithEmailAndPassword(
+              email: emailController.text, password: passwordController.text);
+
+      if (userCredential != null) {
+        if (!mounted) return;
+        FocusScope.of(context).unfocus();
+        SharedPreferences prefs = await SharedPreferences.getInstance();
+        prefs.setBool('appIsLoggedIn', true);
+        prefs.reload();
+        if (!mounted) return;
+        Navigator.pushReplacement(
+          // ignore: use_build_context_synchronously
+          context,
+          MaterialPageRoute(
+            builder: (context) => const HomeView(),
+          ),
+        );
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: AppColors.successColor,
+          content: Text(
+            'Login successfully',
+            style: TextStyle(fontSize: 20),
+          ),
+        ));
+      }
+    } on FirebaseAuthException catch (e) {
+      if (e.code == 'user-not-found') {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: AppColors.yellowColor,
+          content: Text(
+            'No user found for that email',
+            style: TextStyle(fontSize: 20),
+          ),
+        ));
+      } else if (e.code == "wrong-password") {
+        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
+          backgroundColor: AppColors.yellowColor,
+          content: Text(
+            'Wrong password provided for that user',
+            style: TextStyle(fontSize: 20),
+          ),
+        ));
+      }
     }
   }
 
@@ -232,3 +251,4 @@ class _LoginScreenState extends State<LoginScreen> {
     );
   }
 }
+  
