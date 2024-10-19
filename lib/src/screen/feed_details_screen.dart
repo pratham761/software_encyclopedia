@@ -170,13 +170,17 @@ class _FeedDetailsScreenState extends State<FeedDetailsScreen> {
                       padding: const EdgeInsets.only(left: 12),
                       child: InkWell(
                         onTap: () {
-                          Navigator.of(context).push(
+                          if (isUserJoinedCommunity) {
+                            Navigator.of(context).push(
                             MaterialPageRoute(
                               builder: (context) => CommentsScreen(
                                 snap: widget.snap,
                               ),
                             ),
                           );
+                          } else {
+                            showSnackbar('Please join community to view comments', context);
+                          }
                         },
                         child: Padding(
                           padding: const EdgeInsets.symmetric(vertical: 4),
