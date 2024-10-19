@@ -5,6 +5,8 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:software_encyclopedia/src/utils/app_colors.dart';
 import 'package:software_encyclopedia/src/utils/app_strings.dart';
 
+import '../../resources/auth_methods.dart';
+import '../utils/utils.dart';
 import 'home_view.dart';
 import 'signup_screen.dart';
 
@@ -18,6 +20,7 @@ class LoginScreen extends StatefulWidget {
 class _LoginScreenState extends State<LoginScreen> {
   TextEditingController emailController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
+  bool isLoading = false;
 
   @override
   void initState() {
@@ -26,17 +29,26 @@ class _LoginScreenState extends State<LoginScreen> {
 
   loginUser() async {
     try {
-      UserCredential userCredential = await FirebaseAuth.instance
-          .signInWithEmailAndPassword(
-              email: emailController.text, password: passwordController.text);
+      isLoading = true;
+      setState(() {
+        
+      });
+      String res = await AuthMethods().loginUser(
+        email: emailController.text,
+        password: passwordController.text,
+      );
 
-      if (userCredential != null) {
+      if (res == "success") {
         if (!mounted) return;
         FocusScope.of(context).unfocus();
+        isLoading = false;
+        setState(() {
+          
+        });
         SharedPreferences prefs = await SharedPreferences.getInstance();
         prefs.setBool('appIsLoggedIn', true);
         prefs.reload();
-        if (!mounted) return;
+
         Navigator.pushReplacement(
           // ignore: use_build_context_synchronously
           context,
@@ -51,8 +63,19 @@ class _LoginScreenState extends State<LoginScreen> {
             style: TextStyle(fontSize: 20),
           ),
         ));
+      } else {
+        isLoading = false;
+        setState(() {
+          
+        });
+        if (!mounted) return;
+        showSnackbar(res, context);
       }
     } on FirebaseAuthException catch (e) {
+      isLoading = false;
+      setState(() {
+        
+      });
       if (e.code == 'user-not-found') {
         ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
           backgroundColor: AppColors.yellowColor,
@@ -180,22 +203,12 @@ class _LoginScreenState extends State<LoginScreen> {
                       MaterialStateProperty.all(AppColors.canvasColor),
                 ),
                 onPressed: () async {
-                  loginUser();
-                  // FocusScope.of(context).unfocus();
-                  // SharedPreferences prefs =
-                  //     await SharedPreferences.getInstance();
-                  // prefs.setBool('appIsLoggedIn', true);
-                  // prefs.reload();
-                  // if (!mounted) return;
-                  // Navigator.pushReplacement(
-                  //   // ignore: use_build_context_synchronously
-                  //   context,
-                  //   MaterialPageRoute(
-                  //     builder: (context) => const HomeView(),
-                  //   ),
-                  // );
+                  if (!isLoading) {
+loginUser();
+                  }
+                  
                 },
-                child: const Text('LOGIN'),
+                child: isLoading ? CircularProgressIndicator(color: AppColors.canvasColor,) : Text('LOGIN'),
               ),
             ),
             const SizedBox(
@@ -222,33 +235,33 @@ class _LoginScreenState extends State<LoginScreen> {
             const SizedBox(
               height: 10.0,
             ),
-            Row(
-              mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-              crossAxisAlignment: CrossAxisAlignment.center,
-              children: [
-                Container(
-                  width: MediaQuery.of(context).size.width / 3.8,
-                  height: 2,
-                  color: AppColors.primaryColor,
-                ),
-                const Text(
-                  'OR',
-                  style: TextStyle(
-                    fontSize: 15.0,
-                    color: AppColors.primaryColor,
-                  ),
-                ),
-                Container(
-                  width: MediaQuery.of(context).size.width / 3.8,
-                  height: 2,
-                  color: AppColors.primaryColor,
-                ),
-              ],
-            ),
+          //   Row(
+          //     mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+          //     crossAxisAlignment: CrossAxisAlignment.center,
+          //     children: [
+          //       Container(
+          //         width: MediaQuery.of(context).size.width / 3.8,
+          //         height: 2,
+          //         color: AppColors.primaryColor,
+          //       ),
+          //       const Text(
+          //         'OR',
+          //         style: TextStyle(
+          //           fontSize: 15.0,
+          //           color: AppColors.primaryColor,
+          //         ),
+          //       ),
+          //       Container(
+          //         width: MediaQuery.of(context).size.width / 3.8,
+          //         height: 2,
+          //         color: AppColors.primaryColor,
+          //       ),
+          //     ],
+          //   ),
+          // ],
           ],
         ),
       ),
     );
   }
 }
-  

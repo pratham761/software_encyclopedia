@@ -5,6 +5,9 @@ import 'package:flutter/material.dart';
 import 'package:software_encyclopedia/src/screen/login_screen.dart';
 import 'package:software_encyclopedia/src/utils/app_colors.dart';
 
+import '../../resources/auth_methods.dart';
+import '../utils/utils.dart';
+
 class SignUpScreen extends StatefulWidget {
   const SignUpScreen({super.key});
 
@@ -21,23 +24,47 @@ class _SignUpScreenState extends State<SignUpScreen> {
   TextEditingController phoneNumberController = TextEditingController();
   TextEditingController passwordController = TextEditingController();
 
+  bool isLoading = false;
+
   registration() async {
-    if (passwordController.text != "" && emailController.text != "" && userNameController.text != "") {
+    if (passwordController.text != "" && emailController.text != "" && userNameController.text != "" && phoneNumberController.text != "") {
       try {
-        UserCredential userCredential = await FirebaseAuth.instance
-            .createUserWithEmailAndPassword(email: emailController.text, password: passwordController.text);
-            
-            log('userCredential : $userCredential');
-        ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
-          backgroundColor: AppColors.successColor,
-          content: Text(
-            'Registered successfully',
-            style: TextStyle(fontSize: 20),
+        isLoading = true;
+        setState(() {
+          
+        });
+        String res = await AuthMethods().signUpUser(
+        email: emailController.text,
+        password: passwordController.text,
+        username: userNameController.text,
+        phonenumber: phoneNumberController.text,
+      );
+       if (res != "User created successfully") {
+        if (!mounted) return;
+        showSnackbar(res, context);
+        isLoading = false;
+        setState(() {
+          
+        });
+      } else {
+        if (!mounted) return;
+        showSnackbar(
+            "Verification link sent to ${emailController.text}", context);
+        isLoading = false;
+        setState(() {
+          
+        });
+        Navigator.of(context).pushReplacement(
+          MaterialPageRoute(
+            builder: (context) => const LoginScreen(),
           ),
-        ));
-        Navigator.push(
-            context, MaterialPageRoute(builder: (context) => const LoginScreen()));
+        );
+      }
       } on FirebaseAuthException catch (e) {
+        isLoading = false;
+        setState(() {
+          
+        });
         if (e.code == 'weak-password') {
           ScaffoldMessenger.of(context).showSnackBar(const SnackBar(
             backgroundColor: AppColors.yellowColor,
@@ -227,9 +254,12 @@ class _SignUpScreenState extends State<SignUpScreen> {
                       MaterialStateProperty.all(AppColors.canvasColor),
                 ),
                 onPressed: () async {
+                  if (!isLoading) {
                   registration();
+                  }
+
                 },
-                child: const Text('SIGN UP'),
+                child: isLoading ? CircularProgressIndicator(color: AppColors.primaryColor,) : Text('SIGN UP'),
               ),
             ),
             const SizedBox(

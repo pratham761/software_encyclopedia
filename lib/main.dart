@@ -1,9 +1,11 @@
 import 'package:firebase_core/firebase_core.dart';
 import 'package:flutter/material.dart';
+import 'package:provider/provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:software_encyclopedia/src/screen/login_screen.dart';
 import 'package:software_encyclopedia/src/utils/app_colors.dart';
 
+import 'src/providers/user_provider.dart';
 import 'src/screen/home_view.dart';
 
 void main()async {
@@ -18,15 +20,20 @@ class MyApp extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      title: 'Software Encyclopedia',
-      theme: ThemeData(
-        colorScheme:
-            ColorScheme.fromSeed(seedColor: AppColors.primaryShadowColor),
-        useMaterial3: true,
+    return MultiProvider(
+      providers: [
+        ChangeNotifierProvider(create: (_) => UserProvider()),
+      ],
+      child: MaterialApp(
+        title: 'Software Encyclopedia',
+        theme: ThemeData(
+          colorScheme:
+              ColorScheme.fromSeed(seedColor: AppColors.primaryShadowColor),
+          useMaterial3: true,
+        ),
+        debugShowCheckedModeBanner: false,
+        home: const MyHomePage(),
       ),
-      debugShowCheckedModeBanner: false,
-      home: const MyHomePage(),
     );
   }
 }

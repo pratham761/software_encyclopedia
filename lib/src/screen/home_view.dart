@@ -1,3 +1,5 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
+import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/material.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:software_encyclopedia/src/screen/categories_screen.dart';
@@ -6,7 +8,9 @@ import 'package:software_encyclopedia/src/screen/dashboard_screen.dart';
 import 'package:software_encyclopedia/src/screen/profile_screen.dart';
 import 'package:software_encyclopedia/src/utils/app_colors.dart';
 
+import '../../resources/auth_methods.dart';
 import 'login_screen.dart';
+import 'subcategories_screen.dart';
 
 class HomeView extends StatefulWidget {
   const HomeView({super.key});
@@ -18,12 +22,29 @@ class HomeView extends StatefulWidget {
 class _HomeViewState extends State<HomeView> {
   int selectedIndex = 0;
 
+  bool isUserContributor = false;
+  var userData = {};
+
   @override
   void initState() {
     super.initState();
+    getLoggedInUserDetails();
+    AuthMethods().reloadCurrentCustomer();
   }
 
-   void _showLogoutAlert(BuildContext context) {
+  void getLoggedInUserDetails() async {
+    var userSnap = await FirebaseFirestore.instance
+        .collection('users')
+        .doc(FirebaseAuth.instance.currentUser!.uid)
+        .get();
+    userData = userSnap.data()!;
+    print('loggedInUser : ${userSnap}');
+
+    isUserContributor = userData['isContributor'];
+    print('isUserContributor : ${isUserContributor}');
+  }
+
+  void _showLogoutAlert(BuildContext context) {
     showDialog(
       context: context,
       builder: (BuildContext context) {
@@ -32,13 +53,19 @@ class _HomeViewState extends State<HomeView> {
           content: const Text('Are you sure you want to logout?'),
           actions: <Widget>[
             TextButton(
-              child: const Text('Cancel', style: TextStyle(color: AppColors.primaryColor),),
+              child: const Text(
+                'Cancel',
+                style: TextStyle(color: AppColors.primaryColor),
+              ),
               onPressed: () {
                 Navigator.of(context).pop();
               },
             ),
             TextButton(
-              child: const Text('Confirm', style: TextStyle(color: AppColors.primaryColor),),
+              child: const Text(
+                'Confirm',
+                style: TextStyle(color: AppColors.primaryColor),
+              ),
               onPressed: () async {
                 SharedPreferences prefs = await SharedPreferences.getInstance();
                 prefs.setBool('appIsLoggedIn', false);
@@ -88,11 +115,20 @@ class _HomeViewState extends State<HomeView> {
             weight: 25,
           ),
         ),
+        // BottomNavigationBarItem(
+        //   label: '',
+        //   icon: Icon(
+        //     size: 40,
+        //     Icons.category_rounded,
+        //     color: isSelected(1),
+        //     weight: 25,
+        //   ),
+        // ),
         BottomNavigationBarItem(
           label: '',
           icon: Icon(
             size: 40,
-            Icons.category_rounded,
+            Icons.list,
             color: isSelected(1),
             weight: 25,
           ),
@@ -134,23 +170,37 @@ class _HomeViewState extends State<HomeView> {
                   'Software Encyclopedia',
                   style: TextStyle(color: AppColors.primaryColor),
                 )
-              : selectedIndex == 1 ? const Text(
-                  'Categories',
-                  style: TextStyle(color: AppColors.primaryColor),
-                )  : selectedIndex == 2 ? const Text(
-                  'Community',
-                  style: TextStyle(color: AppColors.primaryColor),
-                )  :  const Text('Personal Details', style: TextStyle(color: AppColors.primaryColor),),
+              // : selectedIndex == 1
+              //     ? const Text(
+              //         'Categories',
+              //         style: TextStyle(color: AppColors.primaryColor),
+              //       )
+                  : selectedIndex == 1
+                      ? const Text(
+                          'Add feed',
+                          style: TextStyle(color: AppColors.primaryColor),
+                        )
+                      : selectedIndex == 2
+                          ? const Text(
+                              'Community',
+                              style: TextStyle(color: AppColors.primaryColor),
+                            )
+                          : selectedIndex == 3 ? const Text(
+                              'Personal Details',
+                              style: TextStyle(color: AppColors.primaryColor),
+                            ) : const Text(''),
           actions: [
-            selectedIndex == 0 ? IconButton(
-            onPressed: () async {
-              _showLogoutAlert(context);
-            },
-            icon: const Icon(
-              Icons.logout,
-              color: AppColors.primaryColor,
-            ),
-          ) : const SizedBox()
+            selectedIndex == 0
+                ? IconButton(
+                    onPressed: () async {
+                      _showLogoutAlert(context);
+                    },
+                    icon: const Icon(
+                      Icons.logout,
+                      color: AppColors.primaryColor,
+                    ),
+                  )
+                : const SizedBox()
           ],
         ),
       ),
@@ -170,7 +220,8 @@ class _HomeViewState extends State<HomeView> {
             index: selectedIndex,
             children: const [
               DashboardScreen(),
-              CategoriesScreen(),
+              // CategoriesScreen(),
+              SubcategoriesScreen(),
               CommunityScreen(),
               ProfileScreen(),
             ],

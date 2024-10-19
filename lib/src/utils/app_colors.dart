@@ -8,4 +8,5 @@ class AppColors {
   static const Color successColor = Colors.green;
   static const Color errorColor = Colors.red;
   static const Color yellowColor = Colors.yellow;
+  static const Color greyColor = Color.fromARGB(255, 243, 242, 242);
 }
