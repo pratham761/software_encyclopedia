@@ -122,6 +122,7 @@ class _FeedDetailsScreenState extends State<FeedDetailsScreen> {
                                 widget.snap['categoryId'],
                                 user!.uid,
                               );
+                              Navigator.pop(context);
                             }
                           },
                           child: Text(

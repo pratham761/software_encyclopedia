@@ -8,6 +8,7 @@ import '../models/user.dart' as model;
 import '../providers/user_provider.dart';
 import '../utils/app_colors.dart';
 import '../widget/comment_card_widget.dart';
+import 'home_view.dart';
 
 class CommentsScreen extends StatefulWidget {
   final snap;
@@ -36,7 +37,7 @@ class _CommentsScreenState extends State<CommentsScreen> {
   @override
   Widget build(BuildContext context) {
     // late User user = Provider.of<UserProvider>(context).getUser;
-  
+
     return Scaffold(
       appBar: AppBar(
         backgroundColor: AppColors.primaryShadowColor,
@@ -105,6 +106,13 @@ class _CommentsScreenState extends State<CommentsScreen> {
                 setState(() {
                   commentController.text = '';
                 });
+                Navigator.pushReplacement(
+                  // ignore: use_build_context_synchronously
+                  context,
+                  MaterialPageRoute(
+                    builder: (context) => const HomeView(),
+                  ),
+                );
               },
               child: Container(
                 padding: const EdgeInsets.symmetric(vertical: 8, horizontal: 8),
